@@ -54,6 +54,10 @@ border: 1px solid #dedee3;
 font-size: 0.9em !important;
 }
 
+.reveal li{
+    margin-top: 0.6em !important;
+}
+
 li::before {content: "•"; color: #f04e23;
   display: inline-block; width: 1em;
   margin-left: -1em}

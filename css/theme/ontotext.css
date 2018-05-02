@@ -24,6 +24,9 @@ body {
 .reveal pre {
   font-size: 0.9em !important; }
 
+.reveal li {
+  margin-top: 0.6em !important; }
+
 li::before {
   content: "•";
   color: #f04e23;
