@@ -27,12 +27,26 @@ body {
 .reveal li {
   margin-top: 0.6em !important; }
 
-li::before {
+ul > li::before {
   content: "•";
   color: #f04e23;
   display: inline-block;
   width: 1em;
   margin-left: -1em; }
+
+ol {
+  list-style: none !important;
+  counter-reset: li; }
+
+ol > li::before {
+  content: counter(li) ".";
+  color: #f04e23;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em; }
+
+li {
+  counter-increment: li; }
 
 .reveal ul {
   list-style-type: none !important; }
@@ -97,7 +111,7 @@ body {
 .reveal h6 {
   margin: 0 0 20px 0;
   color: #f04e23;
-  font-family: "Calibri", Impact, sans-serif;
+  font-family: "Calibri", Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
   font-weight: bold;
   line-height: 1.2;
   letter-spacing: normal;

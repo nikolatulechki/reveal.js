@@ -16,11 +16,13 @@
 // Include theme-specific fonts
 @import url(https://fonts.googleapis.com/css?family=Rubik:400,400i,700,700i);
 
+
+
 // Override theme settings (see ../template/settings.scss)
 $mainFont: 'Rubik', sans-serif;
 $mainColor: #333;
 $mainFontSize: 20px;
-$headingFont: 'Calibri', Impact, sans-serif;
+$headingFont: 'Calibri',Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
 $headingFontWeight: bold;
 $headingColor: #f04e23;
 $headingTextTransform: none;
@@ -58,12 +60,23 @@ font-size: 0.9em !important;
     margin-top: 0.6em !important;
 }
 
-li::before {content: "•"; color: #f04e23;
+
+ul > li::before {content: "•"; color: #f04e23;
   display: inline-block; width: 1em;
   margin-left: -1em}
 
+ol {list-style: none !important; counter-reset: li}
+
+ol > li::before {content: counter(li)"."; color: #f04e23;
+  display: inline-block; width: 1em;
+  margin-left: -1em}
+
+li {counter-increment: li}
+
 .reveal ul {
   list-style-type: none !important; }
+
+
 
 .reveal img {
    text-align: center !important;
