@@ -32,7 +32,8 @@ Ontotext style (c) ontotext.com
 
 .hljs-variable,
 .hljs-template-variable,
-.hljs-attribute {
+.hljs-attribute,
+.hljs-attr {
   color: #219;
 }
 
