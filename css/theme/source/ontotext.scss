@@ -5,31 +5,56 @@
  * reveal.js is Copyright (C) 2011-2012 Hakim El Hattab, http://hakim.se
  */
 
-
 // Default mixins and settings -----------------
 @import "../template/mixins";
-@import "../template/settings";
 // ---------------------------------------------
-
-
 
 // Include theme-specific fonts
 @import url(https://fonts.googleapis.com/css?family=Rubik:400,400i,700,700i);
 
 
 
-// Override theme settings (see ../template/settings.scss)
+/*********************************************
+ * VARIABLES
+ *********************************************/
+
+// Background of the presentation
+$backgroundColor: #0e3056;
+$primaryColor: #f04e23;
+$secondaryColor: #04355E;
+$ternaryColor: rgb(45, 186, 171);
+
+// Primary/body text
 $mainFont: 'Rubik', sans-serif;
+$mainFontSize: 1rem;
 $mainColor: #333;
-$mainFontSize: 20px;
-$headingFont: 'Calibri',Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
-$headingFontWeight: bold;
-$headingColor: #f04e23;
-$headingTextTransform: none;
-$backgroundColor: #fff;
+
+// Vertical spacing between blocks of text
+$blockMargin: 1rem;
+$listMargin: $blockMargin * 0.8;
+
+// Headings
+$headingMargin: 0 0 $blockMargin 0;
+$headingFont: "Rubik", sans-serif;
+$headingColor: $primaryColor;
+$headingLineHeight: 1.2;
+$headingFontWeight: 400;
+
+$heading1Size: 2.25rem;
+$heading2Size: 2rem;
+$heading3Size: 1.75rem;
+$heading4Size: 1.5rem;
+
 $linkColor: #003663;
 $linkColorHover: lighten( $linkColor, 20% );
-$selectionBackgroundColor: rgba(0, 0, 0, 0.99);
+
+
+
+// Text selection
+$selectionBackgroundColor: $ternaryColor;
+$selectionColor: #fff;
+
+
 
 section.has-dark-background {
 	&, h1, h2, h3, h4, h5, h6 {
@@ -37,73 +62,551 @@ section.has-dark-background {
 	}
 }
 
-body {
-  background-color: #fff;
-  background-image: url('data:image/png;base64,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') !important;
-  background-repeat:no-repeat !important;
-  background-position-x: 10px !important;
-  background-position-y: 10px !important;
 
+
+/*********************************************
+ * GLOBAL STYLES
+ *********************************************/
+html {
+	font-size: 1.5vw;
+}
+body {
+	background-color: $backgroundColor;
 }
 
-.reveal code {
-padding: 1;
-background: #f3f3f7;
-border: 1px solid #dedee3;
+body:before {
+	content: "";
+	display: block;
+	background-image: url(images/ot-logo-white.svg);
+	width: 13.3vw;
+	height: 3vw;
+	background-size: cover;
+	position: absolute;
+	bottom: 1vw;
+	left: 5.5vw;
+}
+
+.reveal {
+	font-family: $mainFont;
+	font-size: $mainFontSize;
+	font-weight: normal;
+	color: $mainColor;
+}
+
+::selection {
+	color: $selectionColor;
+	background: $selectionBackgroundColor;
+	text-shadow: none;
+}
+
+::-moz-selection {
+	color: $selectionColor;
+	background: $selectionBackgroundColor;
+	text-shadow: none;
+}
+
+.reveal .slides>section,
+.reveal .slides>section>section {
+	line-height: 1.3;
+	font-weight: inherit;
+}
+
+/*********************************************
+ * HEADERS
+ *********************************************/
+
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6 {
+	margin: $headingMargin;
+	color: $headingColor;
+	font-family: $headingFont;
+	font-weight: $headingFontWeight;
+	line-height: $headingLineHeight;
+	word-wrap: break-word;
+}
+
+.reveal h1 {font-size: $heading1Size; }
+.reveal h2 {font-size: $heading2Size; }
+.reveal h3 {font-size: $heading3Size; }
+.reveal h4 {font-size: $heading4Size; }
+
+@media (max-width: 760px) {
+	html {font-size: 14px}
+
+	.reveal h1 { font-size: 1.75rem !important}
+	.reveal h2 { font-size: 1.5rem !important}
+	.reveal h3 { font-size: 1.25rem !important}
+	.reveal h4 { font-size: 1rem !important}
+}
+
+
+
+/*********************************************
+ * Typography
+ *********************************************/
+
+.reveal p {
+	margin-bottom: $blockMargin;
+	line-height: 1.3;
+}
+
+/* Ensure certain elements are never larger than the slide itself */
+.reveal img,
+.reveal video,
+.reveal iframe {
+	max-width: 95%;
+	max-height: 95%;
+}
+.reveal strong,
+.reveal b {
+	font-weight: bold;
+}
+
+.reveal em {
+	font-style: italic;
+}
+
+.reveal blockquote {
+	display: block;
+	position: relative;
+	width: 70%;
+	margin: $blockMargin auto;
+	padding: 5px;
+
+	font-style: italic;
+	background: rgba(255, 255, 255, 0.05);
+	box-shadow: 0px 0px 2px rgba(0,0,0,0.2);
+}
+	.reveal blockquote p:first-child,
+	.reveal blockquote p:last-child {
+		display: inline-block;
+	}
+
+.reveal q {
+	font-style: italic;
 }
 
 .reveal pre {
-font-size: 0.9em !important;
+	display: block;
+	position: relative;
+	width: auto;
+	margin-bottom: $blockMargin;
+	text-align: left;
+	font-size: 0.9em;
+	font-family: monospace;
+	line-height: 1.2em;
+	word-wrap: break-word;
+	box-shadow: 0 6px 10px 0 rgba(0,0,0,.15);
+	border: 1px solid #dedee3;
 }
 
-.reveal li{
-    margin-top: 0.6em !important;
+.reveal code {
+	font-family: monospace;
+	text-transform: none;
+	padding: 0 5px;
+	background: #fff;
+	border: 1px solid #dedee3;
 }
 
-
-ul > li::before {content: "•"; color: #f04e23;
-  display: inline-block; width: 1em;
-  margin-left: -1em}
-
-ol {list-style: none !important; counter-reset: li}
-
-ol > li::before {content: counter(li)"."; color: #f04e23;
-  display: inline-block; width: 1em;
-  margin-left: -1em}
-
-li {counter-increment: li}
-
-.reveal ul {
-  list-style-type: none !important; }
-
-
-
-.reveal img {
-   text-align: center !important;
+.reveal pre code {
+	display: block;
+	overflow: auto;
+	max-height: 400px;
+	word-wrap: normal;
+	padding: 1em;
+	border: none;
 }
 
-.reveal section img {
-    border: none !important;
+.reveal sup {
+	vertical-align: super;
 }
+.reveal sub {
+	vertical-align: sub;
+}
+
+.reveal small {
+	display: inline-block;
+	font-size: 0.6em;
+	line-height: 1.2em;
+	vertical-align: top;
+}
+
+.reveal small * {
+	vertical-align: top;
+}
+
 
 .reveal .subtitle,
 .reveal .author,
 .reveal .date,{
-  text-align: center !important; }
+  text-align: center !important;
+}
 
 
-.reveal .slide-number {
-    background: none;
-    color: #000;
-    border-bottom-style: solid;
-    border-bottom-width: 1px !important;
-    border-bottom-color:  #f04e23;
-    }
+
+/* ------------------------------------
+	Tables
+------------------------------------ */
 
 .reveal table {
+	margin: auto;
+	border-collapse: collapse;
+	border-spacing: 0;
 	box-shadow: 0px 0px 6px rgba(0,0,0,0.3);
 }
 
-// Theme template ------------------------------
-@import "../template/theme";
-// ---------------------------------------------
+.reveal table th {
+	font-weight: bold;
+}
+
+.reveal table th,
+.reveal table td {
+	text-align: left;
+	padding: 0.2em 0.5em 0.2em 0.5em;
+	border-bottom: 1px solid;
+}
+
+.reveal table th[align="center"],
+.reveal table td[align="center"] {
+	text-align: center;
+}
+
+.reveal table th[align="right"],
+.reveal table td[align="right"] {
+	text-align: right;
+}
+
+.reveal table tbody tr:last-child th,
+.reveal table tbody tr:last-child td {
+	border-bottom: none;
+}
+
+
+/* ------------------------------------
+	Lists
+------------------------------------ */
+.reveal ol,
+.reveal dl,
+.reveal ul {
+	display: inline-block;
+	text-align: left;
+	margin: 0;
+	padding: 0;
+	max-width: 1800px;
+	list-style: none;
+}
+
+.reveal ul ul,
+.reveal ul ol,
+.reveal ol ol,
+.reveal ol ul {
+	display: block;
+	margin-left: 0.5em;
+	margin-top: $listMargin;
+}
+
+.reveal dt {
+	font-weight: bold;
+}
+
+.reveal dd {
+	margin-left: 40px;
+}
+
+.reveal li {
+    margin-bottom: $listMargin;
+		padding-left: 1em;
+		position: relative;
+}
+.reveal ul > li::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0.24em;
+	width: 0;
+	height: 0;
+	display: inline-block;
+	border-top: 0.4em solid transparent;
+	border-bottom: 0.4em solid transparent;
+	border-left: 0.5em solid $primaryColor;
+	border-right: none;
+}
+
+.reveal ul ul li::before {
+	border: none;
+	width: 0.6em;
+	height: 0.6em;
+	border-radius: 5em;
+	background-color: $primaryColor;
+	top: 0.36em;
+}
+.reveal ul ul ul li::before {
+	border-radius: 0;
+}
+
+.reveal ol ul li::before {
+	border-left-color: $primaryColor;
+}
+
+ol {
+	counter-reset: li
+}
+
+.reveal ol > li::before {
+	content: counter(li);
+	position: absolute;
+	left: -0.5em;
+	top: 0.1em;
+	color: #fff;
+	font-size: 0.8em;
+	text-align: center;
+	padding: 0.2em;
+	background-color: $primaryColor;
+  display: inline-block;
+	width: 1em;
+	height: 1em;
+	border-radius: 1em;
+	line-height: 1.1em;
+	counter-increment: li
+}
+
+li {
+
+}
+
+
+
+/*********************************************
+ * Slide menu
+ *********************************************/
+
+.reveal .slide-menu-button {
+	left: 3vw !important;
+	bottom: 1.5vw !important;
+	font-size: 1.4rem !important;
+	color: #FFF !important;
+}
+
+@media (max-width: 900px) {
+	.reveal .slide-menu-button {
+		font-size: 4.5vw !important;
+		bottom: 3vw !important;
+	}
+}
+
+
+
+/*********************************************
+ * LINKS
+ *********************************************/
+
+.reveal a {
+	color: $linkColor;
+	text-decoration: underline;
+
+	-webkit-transition: color .15s ease;
+	   -moz-transition: color .15s ease;
+	        transition: color .15s ease;
+}
+	.reveal a:hover {
+		color: $linkColorHover;
+
+		text-shadow: none;
+		border: none;
+	}
+
+.reveal .roll span:after {
+	color: #fff;
+	background: darken( $linkColor, 15% );
+}
+
+
+
+/*********************************************
+ * IMAGES
+ *********************************************/
+.reveal section img {
+	margin: 15px 0px;
+	background: rgba(255,255,255,0.12);
+	border: none;
+	text-align: center;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+	.reveal section img.plain {
+		border: 0;
+		box-shadow: none;
+	}
+
+	.reveal a img {
+		-webkit-transition: all .15s linear;
+		   -moz-transition: all .15s linear;
+		        transition: all .15s linear;
+	}
+
+	.reveal a:hover img {
+		background: rgba(255,255,255,0.2);
+		border-color: $linkColor;
+
+		box-shadow: 0 0 20px rgba(0, 0, 0, 0.55);
+	}
+
+
+
+/* ------------------------------------
+	Slides
+------------------------------------ */
+.reveal .slides > section:not(.stack),
+.reveal .slides .stack section {
+	padding: 1.8rem;
+	display: flex !important;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: auto;
+	background-color: rgba(255, 255, 255, 0.94);
+}
+.reveal .slides > section:not(.stack) {
+	top: 3vw !important;
+	right: 3vw;
+	bottom: 5vw;
+  left: 3vw;
+}
+.reveal .slides .stack section {
+	top: 0 !important;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+.reveal .slides .stack {
+	top: 3vw !important;
+	right: 3vw;
+	left: 3vw;
+	bottom: 5vw;
+	width: auto;
+}
+
+@media (min-width: 1600px) {
+	.reveal .slides > section:not(.stack),
+	.reveal .slides .stack section {
+		max-width: 1600px;
+	}
+}
+
+
+
+/* ------------------------------------
+	Slides in overview mode
+------------------------------------ */
+.reveal.overview .slides section {
+	top: 0 !important;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+.reveal.overview .slides section:hover {
+	outline-color: rgba(255, 255, 255, 0.3);
+}
+.reveal.overview .slides section.present {
+    outline: 30px solid $headingColor;
+    outline-offset: 0px;
+}
+
+
+
+/* ------------------------------------
+	Progress bar
+------------------------------------ */
+.reveal .progress {
+	color: $headingColor !important;
+	height: 5px;
+}
+
+
+
+/*********************************************
+ * NAVIGATION CONTROLS
+ *********************************************/
+
+.reveal .controls {
+	bottom: 0.6vw;
+	right: 2.5vw;
+	font-size: 0.28rem;
+}
+.reveal .controls .controls-arrow:before, .reveal .controls .controls-arrow:after {
+	background-color: #fff;
+}
+
+@media (max-width: 1200px) {
+	.reveal .controls {
+		display: none !important;
+	}
+	.reveal .slide-number {
+		right: 3.5vw !important;
+	}
+}
+
+
+
+/* ------------------------------------
+	Slide numbers
+------------------------------------ */
+.reveal .slide-number {
+	background: transparent;
+	color: rgba(255, 255, 255, 0.6);
+	font-weight: 300;
+	font-family: Rubik, sans-serif;
+	padding: 0;
+	right: 7.5vw;
+	bottom: 2.1vw;
+	font-size: 0.6rem;
+}
+.reveal .slide-number-delimiter {
+	margin: 0 2px;
+}
+.reveal .slide-number-a {
+	font-weight: 600;
+	color: #fff;
+}
+
+
+
+/*********************************************
+ * PROGRESS BAR
+ *********************************************/
+
+.reveal .progress {
+	background: rgba(0,0,0,0.2);
+	color: $linkColor;
+}
+	.reveal .progress span {
+		-webkit-transition: width 800ms cubic-bezier(0.260, 0.860, 0.440, 0.985);
+		   -moz-transition: width 800ms cubic-bezier(0.260, 0.860, 0.440, 0.985);
+		        transition: width 800ms cubic-bezier(0.260, 0.860, 0.440, 0.985);
+	}
+
+
+
+/*********************************************
+ * media queries
+ *********************************************/
+	@media (max-width: 900px) {
+		.reveal .slides > section:not(.stack),
+		.reveal .slides .stack {
+			bottom: 10vw;
+		}
+		body:before {
+			width: 22.2vw;
+			height: 5vw;
+			bottom: 2.6vw;
+			left: 7.8vw;
+		}
+		.reveal .slide-number {
+			bottom: 4.2vw;
+			font-size: 0.7rem;
+		}
+	}
