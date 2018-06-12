@@ -61,12 +61,13 @@ body:before {
 .reveal h4,
 .reveal h5,
 .reveal h6 {
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.3rem 0;
   color: #f04e23;
   font-family: "Rubik", sans-serif;
   font-weight: 400;
   line-height: 1.2;
-  word-wrap: break-word; }
+  word-wrap: break-word;
+  text-align: center; }
 
 .reveal h1 {
   font-size: 2.25rem; }
@@ -96,7 +97,7 @@ body:before {
  * Typography
  *********************************************/
 .reveal p {
-  margin-bottom: 1rem;
+  margin-bottom: 0.3rem;
   line-height: 1.3; }
 
 /* Ensure certain elements are never larger than the slide itself */
@@ -117,7 +118,7 @@ body:before {
   display: block;
   position: relative;
   width: 70%;
-  margin: 1rem auto;
+  margin: 0.3rem auto;
   padding: 5px;
   font-style: italic;
   background: rgba(255, 255, 255, 0.05);
@@ -134,7 +135,7 @@ body:before {
   display: block;
   position: relative;
   width: auto;
-  margin-bottom: 1rem;
+  margin-bottom: 0.3rem;
   text-align: left;
   font-size: 0.9em;
   font-family: monospace;
@@ -227,7 +228,7 @@ body:before {
 .reveal ol ul {
   display: block;
   margin-left: 0.5em;
-  margin-top: 0.8rem; }
+  margin-top: 0.24rem; }
 
 .reveal dt {
   font-weight: bold; }
@@ -236,7 +237,7 @@ body:before {
   margin-left: 40px; }
 
 .reveal li {
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.24rem;
   padding-left: 1em;
   position: relative; }
 
@@ -323,6 +324,11 @@ ol {
 /*********************************************
  * IMAGES
  *********************************************/
+img, table {
+  display: block;
+  margin-left: auto !important;
+  margin-right: auto !important; }
+
 .reveal section img {
   margin: 15px 0px;
   background: rgba(255, 255, 255, 0.12);
@@ -347,13 +353,15 @@ ol {
 /* ------------------------------------
 	Slides
 ------------------------------------ */
+.reveal .slides {
+  text-align: left; }
+
 .reveal .slides > section:not(.stack),
 .reveal .slides .stack section {
   padding: 1.8rem;
   display: flex !important;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
   width: auto;
   background-color: rgba(255, 255, 255, 0.94); }
 
